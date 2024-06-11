@@ -81,6 +81,30 @@ async function run() {
       res.send(result);
     })
 
+    app.put('/myLists/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updateSpot = req.body;
+      const spot = {
+        $set: {
+          name: updateSpot.name,
+          image: updateSpot.image,
+          tourist: updateSpot.tourist,
+          country: updateSpot.country,
+          location: updateSpot.location,
+          short: updateSpot.short,
+          cost: updateSpot.cost,
+          seasonality: updateSpot.seasonality,
+          visitor: updateSpot.visitor,
+          time: updateSpot.time,
+          email: updateSpot.email,
+        }
+      }
+      const result = await myListCollection.updateOne(filter, spot, options);
+      res.send(result);
+    })
+
     app.post('/myLists', async (req, res) => {
       const list = req.body;
       const result = await myListCollection.insertOne(list);
@@ -93,6 +117,14 @@ async function run() {
       const result = await myListCollection.deleteOne(query);
       res.send(result);
     })
+
+    app.get('/myLists/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await myListCollection.findOne(query);
+      res.send(result);
+    })
+
 
 
     // Send a ping to confirm a successful connection
