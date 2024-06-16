@@ -49,6 +49,41 @@ async function run() {
       res.send(result);
     })
 
+
+
+
+
+
+
+
+
+
+    app.get('/spot', async (req, res) => {
+      const blog = spotCollection.find().sort({ startDate: -1 }).limit(6)
+      const result = await blog.toArray()
+      res.send(result)
+    })
+
+    app.get('/spot/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await spotCollection.findOne(query)
+      res.send(result)
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     app.post('/spot', async (req, res) => {
       const newSpot = req.body;
       console.log(newSpot);
